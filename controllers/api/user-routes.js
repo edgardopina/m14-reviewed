@@ -3,11 +3,10 @@ const router = require('express').Router();
 const { User } = require('../../models');
 const withAuth = require('../../utils/auth');
 
-
 //! the following endpoints will be accessible at the /api/users post_url
 //! using /api/users, /api/posts, /api/comment, etc. naming convention, and using the GET, POST, PUT, DELETE
-//! methods, and using the proper HTTP status codes like 400,404, 500, etc. follows the architectural pattern 
-//! called REST.APIs built following this pattern can be accessed are called RESTful APIs 
+//! methods, and using the proper HTTP status codes like 400,404, 500, etc. follows the architectural pattern
+//! called REST.APIs built following this pattern can be accessed are called RESTful APIs
 
 //! GET /api/users - READ ALL USERS
 router.get('/', (req, res) => {
@@ -68,22 +67,23 @@ router.post('/', (req, res) => {
       username: req.body.username,
       email: req.body.email,
       password: req.body.password,
-   }).then(dbUserData => {
-      //* give the server access to the user's user_id and username, and a boolean describing IF the user is logged in.
-      //* the session must BE created before we send the response back, so we're wrapping the variables in a callback.
-      //* the req.session.save() method will INITIATE THE CREATION OF THE SESSION and then run the callback function once complete.
-      // req.session.save(() => {
-      //    req.session.user_id = dbUserData.id;
-      //    req.session.username = dbUserData.username;
-      //    req.session.loggedIn = true;
-      //    res.json(dbUserData); //! callback function
-   // });
-   res.json(dbUserData); //! callback function
    })
-   .catch(err => {
-      console.log(err);
-      res.status(500).json(err);
-   });
+      .then(dbUserData => {
+         //* give the server access to the user's user_id and username, and a boolean describing IF the user is logged in.
+         //* the session must BE created before we send the response back, so we're wrapping the variables in a callback.
+         //* the req.session.save() method will INITIATE THE CREATION OF THE SESSION and then run the callback function once complete.
+         // req.session.save(() => {
+         //    req.session.user_id = dbUserData.id;
+         //    req.session.username = dbUserData.username;
+         //    req.session.loggedIn = true;
+         //    res.json(dbUserData); //! callback function
+         // });
+         res.json(dbUserData); //! callback function
+      })
+      .catch(err => {
+         console.log(err);
+         res.status(500).json(err);
+      });
 });
 
 //! POST(????) /api/users/login
@@ -114,7 +114,7 @@ router.post('/login', (req, res) => {
       //    // callback
       //    res.json({user: dbUserData, message: 'You are now logged in!'});
       // });
-      res.json({user: dbUserData, message: 'You are now logged in!'});
+      res.json({ user: dbUserData, message: 'You are now logged in!' });
    });
 });
 
@@ -133,7 +133,7 @@ router.post('/logout', (req, res) => {
 // router.put('/:id', withAuth, (req, res) => {
 router.put('/:id', (req, res) => {
    User.update(req.body, {
-      individualHooks: true, // paired with hook in User.js
+      individualHooks: false, // paired with beforeUpdate() hook in User.js
       where: {
          id: req.params.id,
       },
