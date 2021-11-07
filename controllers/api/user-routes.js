@@ -86,7 +86,8 @@ router.post('/', (req, res) => {
       });
 });
 
-//! POST(????) /api/users/login
+//! POST /api/users/login - we use POST method because it carries the request parameter in req.body which is more secure than
+//! using the  GET method as it carries the request parameter appended to the URL string (not safe)
 router.post('/login', (req, res) => {
    User.findOne({
       where: {
@@ -98,12 +99,12 @@ router.post('/login', (req, res) => {
          return;
       }
 
-      //verify user
-      // const validPassword = dbUserData.checkPassword(req.body.password);
-      // if (!validPassword) {
-      //    res.status(400).json({ message: 'Incorrect password!' });
-      //    return;
-      // }
+      // verify user
+      const validPassword = dbUserData.checkPassword(req.body.password);
+      if (!validPassword) {
+         res.status(400).json({ message: 'Incorrect password!' });
+         return;
+      }
 
       // res.json({ user: dbUserData, message: 'You are now logged in!' });
       // added session variables
@@ -133,7 +134,7 @@ router.post('/logout', (req, res) => {
 // router.put('/:id', withAuth, (req, res) => {
 router.put('/:id', (req, res) => {
    User.update(req.body, {
-      individualHooks: false, // paired with beforeUpdate() hook in User.js
+      individualHooks: true, // paired with beforeUpdate() hook in User.js
       where: {
          id: req.params.id,
       },
