@@ -1,0 +1,30 @@
+{
+   "name": "m14-reviewed",
+   "version": "1.0.0",
+   "description": "",
+   "main": "server.js",
+   "scripts": {
+      "test": "jest",
+      "start": "nodemon server.js"
+   },
+   "repository": {
+      "type": "git",
+      "url": "git+https://github.com/edgardopina/m14-reviewed.git"
+   },
+   "author": "Edgardo Pina",
+   "license": "MIT",
+   "bugs": {
+      "url": "https://github.com/edgardopina/m14-reviewed/issues"
+   },
+   "homepage": "https://github.com/edgardopina/m14-reviewed#readme",
+   "dependencies": {
+      "bcrypt": "^5.0.1",
+      "connect-session-sequelize": "^7.1.2",
+      "dotenv": "^10.0.0",
+      "express": "^4.17.1",
+      "express-handlebars": "^5.3.4",
+      "express-session": "^1.17.2",
+      "mysql2": "^2.3.3-rc.0",
+      "sequelize": "^6.9.0"
+   }
+}
