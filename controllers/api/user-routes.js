@@ -1,6 +1,6 @@
 const router = require('express').Router();
 // const { User, Post, Vote, Comment } = require('../../models');
-const { User, Post, Vote } = require('../../models');
+const { User, Post, Vote, Comment } = require('../../models');
 const withAuth = require('../../utils/auth');
 
 //! the following endpoints will be accessible at the /api/users post_url
@@ -32,14 +32,14 @@ router.get('/:id', (req, res) => {
             model: Post,
             attributes: ['id', 'title', 'post_url', 'created_at'],
          },
-      //    {
-      //       model: Comment,
-      //       attributes: ['id', 'comment_text', 'created_at'],
-      //       include: {
-      //          model: Post,
-      //          attributes: ['title'],
-      //       },
-      //    },
+         {
+            model: Comment,
+            attributes: ['id', 'comment_text', 'created_at'],
+            include: {
+               model: Post,
+               attributes: ['title'],
+            },
+         },
          {
             model: Post,
             attributes: ['title'],

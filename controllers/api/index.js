@@ -8,4 +8,7 @@ router.use('/users', userRoutes); //! note we are adding '/users' here
 const postRoutes = require('./post-routes.js');
 router.use('/posts', postRoutes); //! note we are adding '/posts' here
 
+const commentRoutes = require('./comment-routes.js');
+router.use('/comments', commentRoutes); //! note we are adding '/comments' here
+
 module.exports = router;

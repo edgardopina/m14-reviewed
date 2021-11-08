@@ -16,15 +16,18 @@ router.get('/', (req, res) => {
          [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'), 'vote_count'],
       ],
       order: [['created_at', 'DESC']], // NEWEST POSTS AT THE TOP
+      //! this include is a LEFT OUTER JOIN, it joins post with comment
       include: [
          {
             model: Comment,
             attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+            //! this include is a LEFT OUTER JOIN, it joins comment with user
             include: {
                model: User,
                attributes: ['username'],
             },
          },
+         //! this include is a LEFT OUTER JOIN, it joins post with user
          {
             model: User,
             attributes: ['username'],
