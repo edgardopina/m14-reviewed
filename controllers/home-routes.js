@@ -5,10 +5,6 @@ const router = require('express').Router();
 const sequelize = require('../config/connection');
 const { Post, User, Comment } = require('../models');
 
-// In this case, we want to
-// // render the homepage.handlebars template (the.handlebars extension is implied). This template was light
-// // on content; it only included a single < div >. Handlebars.js will automatically feed that into the
-// // main.handlebars template, however, and respond with a complete HTML file.
 router.get('/', (req, res) => {
    //* Previously, we used res.send() or res.sendFile() for the response. Because we've hooked up a template
    //* engine, we can now use res.render() and specify which template we want to use.
@@ -40,7 +36,7 @@ router.get('/', (req, res) => {
       .then(dbPostData => {
          // .get({ plain:true }) - serialize data and removes unnecessary attributes
          const posts = dbPostData.map(post => post.get({ plain: true })); // posts - full array of posts data
-         
+
          //! wrap the array posts and pass it as an object to be able to add more properties to the template later
          res.render('homepage', { posts });
          //         res.render('homepage', {
@@ -54,14 +50,14 @@ router.get('/', (req, res) => {
       });
 });
 
-// // renders login page
-// router.get('/login', (req, res) => {
-//    if (req.session.loggedIn) {
-//       res.redirect('/');
-//       return;
-//    }
-//    res.render('login');
-// });
+// renders login page
+router.get('/login', (req, res) => {
+   //    if (req.session.loggedIn) {
+   //       res.redirect('/');
+   //       return;
+   //    }
+   res.render('login'); // we do not need any variables to pass as variables in 2nd parameter
+});
 
 // // GET one post
 // router.get('/post/:id', (req, res) => {
