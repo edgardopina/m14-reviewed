@@ -3,13 +3,12 @@ const express = require('express');
 const routes = require('./controllers'); //! imports all routes for all endpoints from router instance at controllers/index.js
 const sequelize = require('./config/connection'); //  importing the DB connection to Sequelize
 
-const path = require('path'); // import path package
+const path = require('path'); // import path package to enable '/public/' directory
 // const helpers = require('./utils/helpers'); // import helper functions
-// const exphbs = require('express-handlebars'); // import express-handlebars
 
 // const fileUpload = require('express-fileupload'); //! 
 
- 
+
 //! Creating session in the back-end
 const session = require('express-session'); // setup express-session
 const SequelizeStore = require('connect-session-sequelize')(session.Store); // connect the session to our Sequelize database
@@ -18,8 +17,8 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store); // c
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-/*
-! fileuploader */
+
+//! fileuploader 
 // app.use(fileUpload());
 
 // the session objet
@@ -37,24 +36,25 @@ const sess = {
    }),
 };
 
+//! handlebars setup
+const exphbs = require('express-handlebars'); // import express-handlebars
 // const hbs = exphbs.create({ helpers }); // instantiate express-handlebars object
-// app.engine('handlebars', hbs.engine); // sets express engine 'handlebars' from handlebars' engine
-// app.set('view engine', 'handlebars'); // sets 'view engine' from app.engine
+const hbs = exphbs.create({ }); // instantiate express-handlebars object
+app.engine('handlebars', hbs.engine); // sets express engine 'handlebars' from handlebars' engine
+app.set('view engine', 'handlebars'); // sets 'view engine' from app.engine
 
-/* 
-! middleware to create session in the back-end */
+ 
+//! middleware to create session in the back-end 
 // app.use(session(sess));
 
 //! Server setup - 3
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// makes ./public (including stylesheet) to the client
-// The express.static() method is a built-in Express.js middleware function that can take all of the
-// contents of a folder and serve them as static assets. This is useful for front - end specific
-// files like images, style sheets, and JavaScript files.
-/* 
-! this app.use(express.static.....) MUST be placed before app.use(routes); */
+// makes ./public (including stylesheet) to the client. The express.static() method is a built-in
+// Express.js middleware function that takes all the content of a folder and serve them as static assets. 
+// This is useful for front-end specific files like images, style sheets, and JavaScript files.
+//! this app.use(express.static.....) MUST be placed before app.use(routes); 
 app.use(express.static(path.join(__dirname, 'public')));
 
 //! Server setup - 4
