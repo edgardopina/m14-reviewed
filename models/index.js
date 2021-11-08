@@ -6,7 +6,7 @@ const Comment = require('./Comment');
 
 //! REMEMBER: EACH TIME WE UPDATE THE RELATIONSHIPS (ASSOCIATIONS) between the tables, we need to use 
 //! sequelize.sync({ force: true }) in server.js to drop the tables and recreate them!
-
+//* ONE TO ONE RELATIONSHIPS
 User.hasMany(Post, {
    foreignKey: 'user_id',
 });
@@ -17,6 +17,9 @@ Post.belongsTo(User, {
    onDelete: 'SET NULL',
 });
 
+//**********************************************************************************/
+
+//* MANY TO MANY RELATIONSHIPS
 User.belongsToMany(Post, {
    through: Vote,
    as: 'voted_posts',
@@ -36,7 +39,6 @@ Vote.belongsTo(User, {
    onDelete: 'SET NULL',
 });
 
-// ONE-TO-ONE
 Vote.belongsTo(Post, {
    foreignKey: 'post_id',
    onDelete: 'SET NULL',
@@ -50,11 +52,11 @@ User.hasMany(Vote, {
    foreignKey: 'user_id',
 });
 
-// ONE-TO-MANY
 Post.hasMany(Vote, {
    foreignKey: 'post_id',
 });
 
+//**********************************************************************************/
 
 Comment.belongsTo(User, {
    foreignKey: 'user_id',
