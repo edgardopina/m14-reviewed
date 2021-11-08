@@ -3,6 +3,7 @@ const sequelize = require('../../config/connection');
 const { User, Post, Vote, Comment } = require('../../models');
 const withAuth = require('../../utils/auth');
 
+
 // GET /api/posts - GETT ALL POSTS
 router.get('/', (req, res) => {
    Post.findAll({
@@ -39,7 +40,6 @@ router.get('/', (req, res) => {
 
 // GET /api/posts/1 - GET ONE POST
 router.get('/:id', (req, res) => {
-   // data received through req.params.id
    Post.findOne({
       where: {
          id: req.params.id,
@@ -100,28 +100,27 @@ router.post('/',  (req, res) => {
       });
 });
 
-// PUT /api/posts/upvote 
+// PUT /api/posts/upvote - VOTE ON A POST
 //! when we vote on a post, we are technically uopdating the post's data 
 //! THIS ROUTE MUST BE PLACED BEFORE THE '/:id' ROUTE BELOW, OTHERWISE, EXPRESS.JS WILL THINK THAT THE
 //! WORD 'upvote' IS A VALID PARAMETER FOR '/:id' 
-router.put('/upvote', withAuth, (req, res) => {
+// router.put('/upvote', withAuth, (req, res) => {
+router.put('/upvote', (req, res) => {
    // make sure that the session exists first, then if a session does exist, we're using the saved user_id
    // property on the session to insert a new record in the vote table.
-   if (req.session) {
+   // if (req.session) {
       //pass session id along with all destructured properties on req.body
-      Post.upvote({ ...req.body, user_id: req.session.user_id }, { Vote, Comment, User })
+      // Post.upvote({ ...req.body, user_id: req.session.user_id }, { Vote, Comment, User })
+      Post.upvote( req.body, { Vote })
          .then(updatedVoteData => res.json(updatedVoteData))
          .catch(err => {
             console.log(err);
             res.status(500).json(err);
          });
-   }
+   // }
 });
 
 // PUT /api/posts/1 - UPDATE ONE POST
-// data received through req.body and we use req.params.id to ndicate where exactly we want
-// the new data to be used.
-// IF req.body has exact key/value pairs to match the model, you can just use `req.body` instead
 // router.put('/:id', withAuth, (req, res) => {
 router.put('/:id', (req, res) => {
    // data received through req.params.id

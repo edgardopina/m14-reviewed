@@ -34,6 +34,9 @@ Post.belongsToMany(User, {
    onDelete: 'SET NULL',
 });
 
+// By also creating one-to-many associations directly between these models, we can perform aggregated SQL
+// functions between models.In this case, we'll see a total count of votes for a single post when queried.
+// This would be difficult if we hadn't directly associated the Vote model with the other two.
 Vote.belongsTo(User, {
    foreignKey: 'user_id',
    onDelete: 'SET NULL',
@@ -43,10 +46,6 @@ Vote.belongsTo(Post, {
    foreignKey: 'post_id',
    onDelete: 'SET NULL',
 });
-
-// By also creating one-to-many associations directly between these models, we can perform aggregated SQL
-// functions between models.In this case, we'll see a total count of votes for a single post when queried.
-// This would be difficult if we hadn't directly associated the Vote model with the other two.
 
 User.hasMany(Vote, {
    foreignKey: 'user_id',
