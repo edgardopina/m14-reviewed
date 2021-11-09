@@ -8,19 +8,17 @@ const path = require('path'); // import path package to enable '/public/' direct
 
 // const fileUpload = require('express-fileupload'); //! 
 
-
-//! Creating session in the back-end
-const session = require('express-session'); // setup express-session
-const SequelizeStore = require('connect-session-sequelize')(session.Store); // connect the session to our Sequelize database
-
 //! Server setup - 2
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-
 //! fileuploader 
 // app.use(fileUpload());
 
+//! Creating session in the back-end
+const session = require('express-session'); // setup express-session
+// connect the exprfess-session session.store() to our Sequelize database
+const SequelizeStore = require('connect-session-sequelize')(session.Store); 
 // the session objet
 const sess = {
    //! this value must be an actual secret and stored in the '.env' file
@@ -43,9 +41,8 @@ const hbs = exphbs.create({ }); // instantiate express-handlebars object
 app.engine('handlebars', hbs.engine); // sets express engine 'handlebars' from handlebars' engine
 app.set('view engine', 'handlebars'); // sets 'view engine' from app.engine
 
- 
 //! middleware to create session in the back-end 
-// app.use(session(sess));
+app.use(session(sess));
 
 //! Server setup - 3
 app.use(express.json());
