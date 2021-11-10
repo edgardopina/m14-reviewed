@@ -6,8 +6,8 @@ router.use('/', homeRoutes); // enables use of the API homeRoutes/endpoints by r
 
 router.use('/api', apiRoutes); //! prefixing '/api' to packaged group apiRoutes  
 
-// const dashboardRoutes = require('./dashboard-routes');
-// router.use('/dashboard', dashboardRoutes);
+const dashboardRoutes = require('./dashboard-routes');
+router.use('/dashboard', dashboardRoutes);
 
 //* this .use() responds to any request to any endpoint that doesn't exist, it will send a 404 error indicating
 //* we have requested an incorrect resource, another RESTful API practice.

@@ -88,7 +88,6 @@ router.get('/:id', (req, res) => {
 // POST /api/posts - CREATE ONE POST
 // router.post('/', withAuth, (req, res) => {
 router.post('/',  (req, res) => {
-   console.log('req.body', req.body);
    Post.create({
       title: req.body.title,
       post_url: req.body.post_url,
