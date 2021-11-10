@@ -119,7 +119,7 @@ router.put('/upvote', (req, res) => {
             console.log(err);
             res.status(500).json(err);
          });
-   // }
+   }
 });
 
 // PUT /api/posts/1 - UPDATE ONE POST
