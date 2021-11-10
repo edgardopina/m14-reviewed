@@ -4,7 +4,7 @@ const routes = require('./controllers'); //! imports all routes for all endpoint
 const sequelize = require('./config/connection'); //  importing the DB connection to Sequelize
 
 const path = require('path'); // import path package to enable '/public/' directory
-// const helpers = require('./utils/helpers'); // import helper functions
+const helpers = require('./utils/helpers'); // import helper functions
 
 // const fileUpload = require('express-fileupload'); //! 
 
@@ -17,8 +17,8 @@ const PORT = process.env.PORT || 3001;
 
 //! Creating session in the back-end
 const session = require('express-session'); // setup express-session
-// connect the exprfess-session session.store() to our Sequelize database
-const SequelizeStore = require('connect-session-sequelize')(session.Store); 
+
+const SequelizeStore = require('connect-session-sequelize')(session.Store); // connect the exprfess-session session.store() to our Sequelize database
 // the session objet
 const sess = {
    //! this value must be an actual secret and stored in the '.env' file
@@ -36,8 +36,7 @@ const sess = {
 
 //! handlebars setup
 const exphbs = require('express-handlebars'); // import express-handlebars
-// const hbs = exphbs.create({ helpers }); // instantiate express-handlebars object
-const hbs = exphbs.create({ }); // instantiate express-handlebars object
+const hbs = exphbs.create({ helpers }); // instantiate express-handlebars object
 app.engine('handlebars', hbs.engine); // sets express engine 'handlebars' from handlebars' engine
 app.set('view engine', 'handlebars'); // sets 'view engine' from app.engine
 
