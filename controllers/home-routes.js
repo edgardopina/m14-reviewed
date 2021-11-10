@@ -38,11 +38,10 @@ router.get('/', (req, res) => {
          const posts = dbPostData.map(post => post.get({ plain: true })); // posts - full array of posts data
 
          //! wrap the array posts and pass it as an object to be able to add more properties to the template later
-         res.render('homepage', { posts });
-         //         res.render('homepage', {
-         //             posts,
-         //             loggedIn: req.session.loggedIn,
-         //          });
+         res.render('homepage', {
+            posts,
+            loggedIn: req.session.loggedIn,
+         });
       })
       .catch(err => {
          console.error(err);
@@ -52,10 +51,10 @@ router.get('/', (req, res) => {
 
 // renders login page
 router.get('/login', (req, res) => {
-      if (req.session.loggedIn) {
-         res.redirect('/');
-         return;
-      }
+   if (req.session.loggedIn) {
+      res.redirect('/');
+      return;
+   }
    res.render('login'); // we do not need any variables to pass as variables in 2nd parameter
 });
 
@@ -94,11 +93,11 @@ router.get('/post/:id', (req, res) => {
          }
 
          const post = dbPostData.get({ plain: true }); // serialize the data
-         // pass data to template; loggedIN session variable to control what elements render and which ones not
-         res.render('single-post', { post });
-         //    post,
-         //    loggedIn: req.session.loggedIn,
-         // });
+         //! pass data to template; loggedIN session variable to control what elements render and which ones not
+         res.render('single-post', {
+            post,
+            loggedIn: req.session.loggedIn,
+         });
       })
       .catch(err => {
          console.log(err);

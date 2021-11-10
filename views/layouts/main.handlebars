@@ -3,22 +3,22 @@
    <head>
       <meta charset='UTF-8' />
       <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-      <title>Tech News Reviewed</title>
+      <title>Just Tech News</title>
       <link rel='stylesheet' href='/stylesheets/style.css' />
    </head>
    <body>
       <div class='wrapper'>
          <header>
             <h1>
-               <a href='/'>Tech News Reviewed</a>
+               <a href='/'>Just Tech News</a>
             </h1>
             <nav>
-               {{!-- {{#if loggedIn}}
-                  <a href='/dashboard'>dashboard</a> --}}
+                  {{!-- <a href='/dashboard'>dashboard</a> --}}
+               {{#if loggedIn}}
                   <button id='logout' class='btn-no-style'>logout</button>
-               {{!-- {{else}} --}}
+               {{else}}
                   <a href='/login'>login</a>
-               {{!-- {{/if}} --}}
+               {{/if}}
             </nav>
          </header>
          <main>
@@ -28,8 +28,8 @@
             Thanks for visiting!
          </footer>
       </div>
-      {{!-- {{#if loggedIn}} --}}
+      {{#if loggedIn}}
          <script src='/javascript/logout.js'></script>
-      {{!-- {{/if}} --}}
+      {{/if}}
    </body>
 </html>
