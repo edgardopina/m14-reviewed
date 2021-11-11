@@ -3,8 +3,7 @@ const sequelize = require('../../config/connection');
 const { User, Post, Vote, Comment } = require('../../models');
 const withAuth = require('../../utils/auth');
 
-
-// GET /api/posts - GETT ALL POSTS
+// GET /api/posts - GET ALL POSTS
 router.get('/', (req, res) => {
    Post.findAll({
       attributes: [
@@ -12,7 +11,7 @@ router.get('/', (req, res) => {
          'post_url',
          'title',
          'created_at',
-         //! add count of votes per post         
+         //! add count of votes per post
          [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'), 'vote_count'],
       ],
       order: [['created_at', 'DESC']], // NEWEST POSTS AT THE TOP
@@ -86,8 +85,7 @@ router.get('/:id', (req, res) => {
 });
 
 // POST /api/posts - CREATE ONE POST
-// router.post('/', withAuth, (req, res) => {
-router.post('/',  (req, res) => {
+router.post('/', withAuth, (req, res) => {
    Post.create({
       title: req.body.title,
       post_url: req.body.post_url,
@@ -101,11 +99,10 @@ router.post('/',  (req, res) => {
 });
 
 // PUT /api/posts/upvote - VOTE ON A POST
-//! when we vote on a post, we are technically uopdating the post's data 
+//! when we vote on a post, we are technically uopdating the post's data
 //! THIS ROUTE MUST BE PLACED BEFORE THE '/:id' ROUTE BELOW, OTHERWISE, EXPRESS.JS WILL THINK THAT THE
-//! WORD 'upvote' IS A VALID PARAMETER FOR '/:id' 
-// router.put('/upvote', withAuth, (req, res) => {
-router.put('/upvote', (req, res) => {
+//! WORD 'upvote' IS A VALID PARAMETER FOR '/:id'
+router.put('/upvote', withAuth, (req, res) => {
    // make sure that the session exists first, then if a session does exist, we're using the saved user_id
    // property on the session to insert a new record in the vote table.
    if (req.session) {
@@ -120,12 +117,12 @@ router.put('/upvote', (req, res) => {
 });
 
 // PUT /api/posts/1 - UPDATE ONE POST
-// router.put('/:id', withAuth, (req, res) => {
-router.put('/:id', (req, res) => {
-   // data received through req.params.id
-   Post.update({
+router.put('/:id', withAuth, (req, res) => {
+   Post.update(
+      {
          title: req.body.title,
-      }, {
+      },
+      {
          where: {
             id: req.params.id,
          },
@@ -145,8 +142,7 @@ router.put('/:id', (req, res) => {
 });
 
 // DELETE /api/posts/1 - DELETE ONE POST
-// router.delete('/:id', withAuth, (req, res) => {
-router.delete('/:id', (req, res) => {
+router.delete('/:id', withAuth, (req, res) => {
    Post.destroy({
       where: {
          id: req.params.id,

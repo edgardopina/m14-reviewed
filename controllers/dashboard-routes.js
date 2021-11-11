@@ -3,13 +3,10 @@ const sequelize = require('../config/connection');
 const { Post, User, Comment } = require('../models');
 const withAuth = require('../utils/auth');
 
-// Get main page
-// NOTE the MIDDLEWARE CALL 'withAuth' AND visualize the order here.
-// When withAuth() calls next(), it will call the next(anonymous) function.
-// However, if withAuth() calls res.redirect(), there is no need for the next function to
-//  be called, because the response has already been sent.
-// router.get('/', withAuth, (req, res) => {
-router.get('/', (req, res) => {
+
+//! Get main page
+//* NOTE the MIDDLEWARE CALL 'withAuth' AND visualize the order here.
+router.get('/', withAuth, (req, res) => {
    Post.findAll({
       where: {
          user_id: req.session.user_id,
@@ -46,7 +43,7 @@ router.get('/', (req, res) => {
       });
 });
 
-// GET edit one post
+//! GET edit one post
 router.get('/edit/:id', withAuth, (req, res) => {
    Post.findOne({
       where: {
@@ -81,7 +78,7 @@ router.get('/edit/:id', withAuth, (req, res) => {
          }
 
          const post = dbPostData.get({ plain: true }); // serialize the data
-         // pass data to template; loggedIN session variable to control what elements render and which ones not
+         // loggedIN session variable to control what elements render and which ones not
          res.render('edit-post', {
             post,
             loggedIn: req.session.loggedIn,

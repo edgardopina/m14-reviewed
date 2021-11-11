@@ -62,32 +62,34 @@ router.get('/:id', (req, res) => {
 });
 
 //! POST /api/users - CREATE AN USER
+//! we do not use midleware function 'withAuth' here because we need to create an user
 router.post('/', (req, res) => {
    User.create({
       username: req.body.username,
       email: req.body.email,
       password: req.body.password,
    })
-      .then(dbUserData => {
-         //* give the server access to the user's user_id and username, and a boolean describing IF the user is logged in.
-         //* the session must BE created before we send the response back, so we're wrapping the variables in a callback.
-         //* the req.session.save() method will INITIATE THE CREATION OF THE SESSION and then run the callback function once complete.
-         req.session.save(() => {
-            req.session.user_id = dbUserData.id;
-            req.session.username = dbUserData.username;
-            req.session.loggedIn = true;
-            res.json(dbUserData); //! callback function
-         });
-         // res.json(dbUserData); //! callback function
-      })
-      .catch(err => {
-         console.log(err);
-         res.status(500).json(err);
+   .then(dbUserData => {
+      //* give the server access to the user's user_id and username, and a boolean describing IF the user is logged in.
+      //* the session must BE created before we send the response back, so we're wrapping the variables in a callback.
+      //* the req.session.save() method will INITIATE THE CREATION OF THE SESSION and then run the callback function once complete.
+      req.session.save(() => {
+         req.session.user_id = dbUserData.id;
+         req.session.username = dbUserData.username;
+         req.session.loggedIn = true;
+         res.json(dbUserData); //! callback function
       });
+      // res.json(dbUserData); //! callback function
+   })
+   .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+   });
 });
 
 //! POST /api/users/login - we use POST method because it carries the request parameter in req.body which is more secure than
 //! using the  GET method as it carries the request parameter appended to the URL string (not safe)
+//! we do not use midleware function 'withAuth' here because we need to login as an user
 router.post('/login', (req, res) => {
    User.findOne({
       where: {
@@ -98,13 +100,13 @@ router.post('/login', (req, res) => {
          res.status(404).json({ message: 'No user found with that email address!' });
          return;
       }
-
+      
       const validPassword = dbUserData.checkPassword(req.body.password); // verify user
       if (!validPassword) {
          res.status(400).json({ message: 'Incorrect password!' });
          return;
       }
-
+      
       // added session variables
       req.session.save(() => {
          req.session.user_id = dbUserData.id;
@@ -115,7 +117,8 @@ router.post('/login', (req, res) => {
    });
 });
 
-// POST /api/users/logout
+//! POST /api/users/logout
+//! we do not need midleware function 'withAuth' to logout
 router.post('/logout', (req, res) => {
    if (req.session.loggedIn) {
       req.session.destroy(() => {
@@ -126,9 +129,8 @@ router.post('/logout', (req, res) => {
    }
 });
 
-// PUT /api/users/1 - UPDATE ONE USER
-// router.put('/:id', withAuth, (req, res) => {
-router.put('/:id', (req, res) => {
+//! PUT /api/users/1 - UPDATE ONE USER
+router.put('/:id', withAuth, (req, res) => {
    User.update(req.body, {
       individualHooks: true, // paired with beforeUpdate() hook in User.js
       where: {
@@ -149,9 +151,8 @@ router.put('/:id', (req, res) => {
       });
 });
 
-// DELETE /api/users/1 - DELETE ONE USER
-// router.delete('/:id', withAuth, (req, res) => {
-router.delete('/:id', (req, res) => {
+//! DELETE /api/users/1 - DELETE ONE USER
+router.delete('/:id', withAuth, (req, res) => {
    User.destroy({
       where: {
          id: req.params.id,

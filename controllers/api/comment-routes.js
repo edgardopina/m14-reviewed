@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { Comment } = require('../../models');
 const withAuth = require('../../utils/auth');
 
-// GET /api/comments - GET ALL COMMENTS
+//! GET /api/comments - GET ALL COMMENTS
 router.get('/', (req, res) => {
    Comment.findAll()
       .then(dbCommentData => res.json(dbCommentData))
@@ -12,15 +12,12 @@ router.get('/', (req, res) => {
       });
 });
 
-// POST /api/comments - CREATE ONE COMMENT
-// router.post('/', withAuth, (req, res) => {
-router.post('/', (req, res) => {
-   // check for an active session to ensure that only logged users can interact with the database
-   if (req.session) {
+//! POST /api/comments - CREATE ONE COMMENT
+router.post('/', withAuth, (req, res) => {
+   if (req.session) { // only active logged users can interact with the database
       Comment.create({
          comment_text: req.body.comment_text,
-         // user_id: req.session.user_id,
-         user_id: req.body.user_id,
+         user_id: req.session.user_id,
          post_id: req.body.post_id,
       })
          .then(dbCommentData => res.json(dbCommentData))
@@ -31,9 +28,8 @@ router.post('/', (req, res) => {
    }
 });
 
-// DELETE /api/comments/1 ' DELETE ONE COMMENT
-// router.delete('/:id', withAuth, (req, res) => {
-router.delete('/:id', (req, res) => {
+//! DELETE /api/comments/1 ' DELETE ONE COMMENT
+router.delete('/:id', withAuth, (req, res) => {
    Comment.destroy({
       where: {
          id: req.params.id,
