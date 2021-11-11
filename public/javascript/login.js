@@ -48,8 +48,7 @@ async function signupFormHandler(event) {
       });
       // check the response status code
       if (response.ok) {
-         console.log(`Success! You can log-in now`);
-         // document.location.replace('/dashboard/');
+         document.location.replace('/dashboard/');
       } else {
          alert(response.statusText);
       }
